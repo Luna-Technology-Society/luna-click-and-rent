@@ -40,7 +40,7 @@ const emailButton = {
 // markup
 const IndexPage = () => {
   return (
-    <main style={pageStyles}>
+    <form style={pageStyles} method="POST">
       
       <title>Click and rent</title>
       <h1 style={headingStyles}>
@@ -50,10 +50,10 @@ const IndexPage = () => {
       <br />
       <input style={emailInput} name="email" placeholder="johndoe@gmail.com" type="email" />
       <br />
-      <button style={emailButton}>
+      <button type="submit" style={emailButton}>
         Generate
       </button>
-    </main>
+    </form>
   )
 }
 
