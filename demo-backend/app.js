@@ -33,18 +33,23 @@ app.post('/', function (req, res) {
 
       const mailOptions = {
          from: process.env.EMAIL_USERNAME, // Sender address
-         to: 'receiver@gmail.com', // List of recipients
+         to: req.body.email, // List of recipients
          subject: 'Node Mailer', // Subject line
          text: 'Hello People!, Welcome to Bacancy!', // Plain text body
       };
 
-      transport.sendMail(mailOptions, (err, info) => {
-         if (err) {
-            res.send("ERROR: " + err);
-         } else {
-            res.send("Email sent to " + req.body.email + ". " + info);
-         }
-      });
+      try {
+         transport.sendMail(mailOptions, (err, info) => {
+            if (err) {
+               res.send("ERROR: " + err);
+            } else {
+               res.send("Email sent to " + req.body.email + ". " + info);
+            }
+         });
+      } catch (err) {
+         console.log(err);
+         res.send("ERROR: " + err);
+      }
 
       
    }
