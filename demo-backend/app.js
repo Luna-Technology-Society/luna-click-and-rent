@@ -26,6 +26,7 @@ let transport = nodemailer.createTransport({
 });
 
 app.post('/', function (req, res) {
+   console.log("Post request received...");
    if (!req.body.email || !req.body.email.toString().match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
       res.status(400);
       res.json({ message: "Bad Request" });

@@ -11,7 +11,7 @@ const IndexPage = () => {
   }
 
   const handleClick = (e) => {
-    axios.post('http://142.132.237.218:3000', {
+    axios.post('http://142.132.237.218:3000/', {
       email: inputVal
     })
     .then(function (response) {
