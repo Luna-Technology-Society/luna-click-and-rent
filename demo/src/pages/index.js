@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import "../styles/index.css"
 
@@ -11,15 +11,29 @@ const IndexPage = () => {
   }
 
   const handleClick = (e) => {
+    axios({
+      method: "POST",
+      url: "http://142.132.237.218:3000/",
+      data: {
+        email: inputVal
+      }
+    }).then((response) => {
+      if (response.data.msg === 'success') {
+        console.log("Email sent, awesome!");
+        setInputVal("");
+      } else if (response.data.msg === 'fail') {
+        console.log("Oops, something went wrong. Try again")
+      }
+    })
     axios.post('http://142.132.237.218:3000/', {
       email: inputVal
     })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   return (
