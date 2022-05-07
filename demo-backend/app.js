@@ -41,8 +41,10 @@ app.post('/', function (req, res) {
       try {
          transport.sendMail(mailOptions, (err, info) => {
             if (err) {
+               console.log(err);
                res.send("ERROR: " + err);
             } else {
+               console.log(err);
                res.send("Email sent to " + req.body.email + ". " + info);
             }
          });
