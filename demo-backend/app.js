@@ -12,18 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-console.log(process.env.EMAIL_USERNAME,
-   process.env.EMAIL_PASSWORD)
-
-let transport = nodemailer.createTransport({
-   host: "smtp.gmail.com",
-   port: 465,
-   secure: true,
-   auth: {
-     user: process.env.EMAIL_USERNAME,
-     pass: process.env.EMAIL_PASSWORD
-   }
-});
+console.log(process.env.EMAIL_USERNAME, process.env.EMAIL_PASSWORD)
 
 app.post('/', function (req, res) {
    console.log("Post request received...");
@@ -40,6 +29,17 @@ app.post('/', function (req, res) {
       };
       try {
          console.log("attempting to send email...");
+
+         let transport = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
+            auth: {
+               user: process.env.EMAIL_USERNAME,
+               pass: process.env.EMAIL_PASSWORD
+            }
+         });
+         
          transport.sendMail(mailOptions, (err, info) => {
             console.log("Sending email...");
             if (err) {
@@ -55,7 +55,7 @@ app.post('/', function (req, res) {
          res.send("ERROR: " + err);
       }
 
-      
+
    }
 });
 
