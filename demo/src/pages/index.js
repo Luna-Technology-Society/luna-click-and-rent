@@ -1,9 +1,48 @@
-import * as React from "react"
+import React, {useState} from "react";
+import axios from 'axios';
+import "../styles/index.css"
+
+// markup
+const IndexPage = () => {
+  const [inputVal, setInputVal] = useState("");
+
+  const handleChange = (e) => {
+    setInputVal(e.target.value);
+  }
+
+  const handleClick = (e) => {
+    axios.post('http://142.132.237.218:3000', {
+      email: inputVal
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  return (
+    <main style={pageStyles}>
+      <title>Click and rent</title>
+      <h1 style={headingStyles}>
+        Please enter your email to receive the code.
+      </h1>
+      <label style={emailLabel} name="email">Your email</label>
+      <br />
+      <input style={emailInput} value={inputVal} onChange={handleChange} name="email" placeholder="johndoe@gmail.com" type="email" />
+      <br />
+      <button type="submit" style={emailButton} onClick={handleClick}>
+        Generate
+      </button>
+    </main>
+  )
+}
 
 // styles
 const pageStyles = {
   color: "#232129",
-  padding: 96,
+  padding: "5%",
   fontFamily: "-apple-system, Roboto, sans-serif, serif",
   maxWidth: 380
 }
@@ -34,27 +73,9 @@ const emailButton = {
   fontSize: 17,
   marginTop: 15,
   border: "none",
-  backgroundColor: "orange"
-}
-
-// markup
-const IndexPage = () => {
-  return (
-    <form style={pageStyles} method="POST">
-      
-      <title>Click and rent</title>
-      <h1 style={headingStyles}>
-        Please enter your email to receive the code.
-      </h1>
-      <label style={emailLabel} name="email">Your email</label>
-      <br />
-      <input style={emailInput} name="email" placeholder="johndoe@gmail.com" type="email" />
-      <br />
-      <button type="submit" style={emailButton}>
-        Generate
-      </button>
-    </form>
-  )
+  backgroundColor: "#0d96a8",
+  cursor: "pointer",
+  color: "white"
 }
 
 export default IndexPage
