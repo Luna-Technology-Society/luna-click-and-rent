@@ -30,12 +30,15 @@ app.post('/', function (req, res) {
       try {
          console.log("attempting to send email...");
 
-         let transport = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 465,
+         let transporter = nodemailer.createTransport({
+            service: 'gmail',
             auth: {
-               user: process.env.EMAIL_USERNAME,
-               pass: process.env.EMAIL_PASSWORD
+               type: 'OAuth2',
+               user: process.env.MAIL_USERNAME,
+               pass: process.env.MAIL_PASSWORD,
+               clientId: process.env.OAUTH_CLIENTID,
+               clientSecret: process.env.OAUTH_CLIENT_SECRET,
+               refreshToken: process.env.OAUTH_REFRESH_TOKEN
             }
          });
 
