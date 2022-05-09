@@ -12,7 +12,8 @@
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "clean": "gatsby clean",
+    "export": "gatsby build | firebase deploy"
   },
   "dependencies": {
     "@mui/material": "^5.6.4",
