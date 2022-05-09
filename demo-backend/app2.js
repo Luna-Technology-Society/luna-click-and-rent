@@ -3,11 +3,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require("nodemailer");
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 
 
 const app = express();
-const port = 80;
+const port = 3000;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -53,10 +54,15 @@ app.post('/', async (req, res) => {
 })
 
 // serve the API with signed certificate on 443 (SSL/HTTPS) port
-const httpsServer = https.createServer({
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem'),
-  }, app);
+let httpsServer;
+try {
+    httpsServer = https.createServer({
+        key: fs.readFileSync('key.pem'),
+        cert: fs.readFileSync('cert.pem'),
+      }, app);
+} catch (err) {
+    httpsServer = http.createServer(app);
+}
     
 
 httpsServer.listen(port, () => {
