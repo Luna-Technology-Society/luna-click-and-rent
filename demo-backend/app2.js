@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
 const nodemailer = require("nodemailer");
+const https = require('https');
+const fs = require('fs');
+
 
 const app = express();
 const port = 3000;
@@ -50,4 +52,13 @@ app.post('/', async (req, res) => {
     res.send('Email Sent!')
 })
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+// serve the API with signed certificate on 443 (SSL/HTTPS) port
+const httpsServer = https.createServer({
+    key: fs.readFileSync('./privkey.pem'),
+    cert: fs.readFileSync('./certificate.pem'),
+  }, app);
+    
+
+httpsServer.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+});
