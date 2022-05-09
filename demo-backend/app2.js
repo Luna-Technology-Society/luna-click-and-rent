@@ -54,8 +54,8 @@ app.post('/', async (req, res) => {
 
 // serve the API with signed certificate on 443 (SSL/HTTPS) port
 const httpsServer = https.createServer({
-    key: fs.readFileSync('./privkey.pem'),
-    cert: fs.readFileSync('./certificate.pem'),
+    key: fs.readFileSync('privkey.pem'),
+    cert: fs.readFileSync('certificate.pem'),
   }, app);
     
 
