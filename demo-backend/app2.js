@@ -57,8 +57,8 @@ app.post('/', async (req, res) => {
 let httpsServer;
 try {
     httpsServer = https.createServer({
-        key: fs.readFileSync('key.pem'),
-        cert: fs.readFileSync('cert.pem'),
+        key: fs.readFileSync('server.pem'),
+        cert: fs.readFileSync('server.pem'),
       }, app);
 } catch (err) {
     httpsServer = http.createServer(app);

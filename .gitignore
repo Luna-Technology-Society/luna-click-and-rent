@@ -66,5 +66,4 @@ node_modules/
 .env
 
 # ssl certificates
-certificate.pem
-privatekey.pem
+demo-backend/*.pem
