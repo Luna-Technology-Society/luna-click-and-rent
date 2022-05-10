@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 app.post('/', async (req, res) => {
     const { email } = req.body;
     try {
-        // create reusable transporter object using the default SMTP transport
+        console.log("creating transporter...")
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -29,18 +29,20 @@ app.post('/', async (req, res) => {
             }
         });
 
+        console.log("creating email...")
         const msg = {
             from: '"LUNA Click and Rent" <crbyluna@gmail.com>', // sender address
             to: `${email}`, // list of receivers
             subject: "Sup", // Subject line
             text: "Long time no see", // plain text body
         }
-        // send mail with defined transport object
-        const info = await transporter.sendMail(msg);
 
-        res.status(200).send("Email Sent!");
+        console.log("sending email...")
+        const info = await transporter.sendMail(msg);
+        console.log("Email sent!")
+        res.status(200).send({message: "Email sent!"});
     } catch (err) {
-        res.status(400).send("Email Sent!" + err);
+        res.status(400).send({message: "Email failed to send", error: err});
     }
 })
 
