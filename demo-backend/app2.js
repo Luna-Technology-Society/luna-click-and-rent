@@ -8,51 +8,40 @@ const port = process.env.PORT || 3000;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
- 
+
 // parse application/json
 app.use(bodyParser.json());
-app.use(cors({ origin: 'https://clickandrent-demo.web.app/'}));
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-//     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-//     next();
-// });
-
+app.use(cors({ origin: 'https://clickandrent-demo.web.app/' }));
 
 app.get('/', (req, res) => {
-    res.send('Hello vro!');
+    res.send('Simple get request');
 })
 
 app.post('/', async (req, res) => {
-    const {email} = req.body;
-    // create reusable transporter object using the default SMTP transport
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        auth: {
-            user: 'sven.hackett45@ethereal.email',
-            pass: 'UnmU1GqgrKs9zz5vcP'
+    const { email } = req.body;
+    try {
+        // create reusable transporter object using the default SMTP transport
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'crbyluna@gmail.com',
+                pass: ''
+            }
+        });
+
+        const msg = {
+            from: '"LUNA Click and Rent" <crbyluna@gmail.com>', // sender address
+            to: `${email}`, // list of receivers
+            subject: "Sup", // Subject line
+            text: "Long time no see", // plain text body
         }
-    });
-    
-    const msg = {
-        from: '"LUNA Click and Rent" <crluna@gmail.com>', // sender address
-        to: `${email}`, // list of receivers
-        subject: "Sup", // Subject line
-        text: "Long time no see", // plain text body
+        // send mail with defined transport object
+        const info = await transporter.sendMail(msg);
+
+        res.send('Email Sent!', info)
+    } catch (err) {
+        res.send('Failed ot send email!', err)
     }
-    // send mail with defined transport object
-    const info = await transporter.sendMail(msg);
-
-    console.log("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-    // Preview only available when sending through an Ethereal account
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-    
-    res.send('Email Sent!')
 })
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
