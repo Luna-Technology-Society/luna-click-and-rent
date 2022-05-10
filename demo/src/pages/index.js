@@ -13,7 +13,7 @@ const IndexPage = () => {
   const handleClick = (e) => {
     axios({
       method: "POST",
-      url: "https://142.132.237.218:3000/",
+      url: "https://crapi.oskarmroz.com/",
       data: {
         email: inputVal
       }
