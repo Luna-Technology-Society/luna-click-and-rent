@@ -38,9 +38,9 @@ app.post('/', async (req, res) => {
         // send mail with defined transport object
         const info = await transporter.sendMail(msg);
 
-        res.send('Email Sent!', info)
+        res.status(200).send("Email Sent!");
     } catch (err) {
-        res.send('Failed ot send email!', err)
+        res.status(400).send("Email Sent!" + err);
     }
 })
 
