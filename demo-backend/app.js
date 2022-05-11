@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
-app.use(cors({ origin: 'https://clickandrent-demo.web.app/' }));
+app.use(cors({ origin: 'https://clickandrent-demo.web.app' }));
 
 const sendMail = (sendTo) => {
     // Create the transporter with the required configuration for Outlook
@@ -41,7 +41,7 @@ const sendMail = (sendTo) => {
     };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             return console.log(error);
         }
@@ -55,7 +55,7 @@ app.get('/', (req, res) => {
     res.send('Simple get request');
 })
 
-app.post('/', async (req, res) => {
+app.post('/', async(req, res) => {
     const { email } = req.body;
     try {
         sendMail(email);
