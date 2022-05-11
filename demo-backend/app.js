@@ -1,66 +1,68 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var nodemailer = require('nodemailer');
-var cors = require('cors');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const nodemailer = require("nodemailer");
 const dotenv = require('dotenv');
-
 dotenv.config({ path: '.env' });
 
-var app = express();
+const app = express();
+const port = process.env.PORT || 3000;
 
-app.use(cors());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({ origin: 'https://clickandrent-demo.web.app/' }));
 
-console.log(process.env.EMAIL_USERNAME, process.env.EMAIL_PASSWORD)
+const sendMail = (sendTo) => {
+    // Create the transporter with the required configuration for Outlook
+    // change the user and pass !
+    var transporter = nodemailer.createTransport({
+        host: "smtp-mail.outlook.com", // hostname
+        secureConnection: false, // TLS requires secureConnection to be false
+        port: 587, // port for secure SMTP
+        tls: {
+            ciphers: 'SSLv3'
+        },
+        auth: {
+            user: process.env.MAIL_USERNAME,
+            pass: process.env.MAIL_PASSWORD
+        }
+    });
 
-app.post('/', function (req, res) {
-   console.log("Post request received...");
-   if (!req.body.email || !req.body.email.toString().match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-      res.status(400);
-      res.json({ message: "Bad Request" });
-   } else {
-      console.log("Correct input.");
-      const mailOptions = {
-         from: process.env.EMAIL_USERNAME, // Sender address
-         to: req.body.email, // List of recipients
-         subject: 'Node Mailer', // Subject line
-         text: 'Hello People!, Welcome to Bacancy!', // Plain text body
-      };
-      try {
-         console.log("attempting to send email...");
+    // setup e-mail data, even with unicode symbols
+    var mailOptions = {
+        from: process.env.MAIL_USERNAME, // sender address (who sends)
+        to: sendTo, // list of receivers (who receives)
+        subject: 'Hello ', // Subject line
+        text: 'Hello world ', // plaintext body
+        html: '<b>Hello world </b><br> This is the first email sent with Nodemailer in Node.js' // html body
+    };
 
-         let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-               type: 'OAuth2',
-               user: process.env.MAIL_USERNAME,
-               pass: process.env.MAIL_PASSWORD,
-               clientId: process.env.OAUTH_CLIENTID,
-               clientSecret: process.env.OAUTH_CLIENT_SECRET,
-               refreshToken: process.env.OAUTH_REFRESH_TOKEN
-            }
-         });
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            return console.log(error);
+        }
 
-         transport.sendMail(mailOptions, (err, info) => {
-            console.log("Sending email...");
-            if (err) {
-               console.log(err);
-               res.send("ERROR: " + err);
-            } else {
-               console.log(info);
-               res.send("Email sent to " + req.body.email + ". " + info);
-            }
-         });
-      } catch (err) {
-         console.log(err);
-         res.send("ERROR: " + err);
-      }
+        console.log('Message sent: ' + info.response);
+    });
 
+}
 
-   }
-});
-
-app.listen(3000, function () {
-   console.log('CORS-enabled web server listening on port 3000. http://localhost:3000')
+app.get('/', (req, res) => {
+    res.send('Simple get request');
 })
+
+app.post('/', async (req, res) => {
+    const { email } = req.body;
+    try {
+        sendMail(email);
+        res.status(200).send({ message: "Email sent!" });
+    } catch (err) {
+        res.status(400).send({ message: "Email failed to send", error: err });
+    }
+})
+
+app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
