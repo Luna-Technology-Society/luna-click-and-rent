@@ -46,7 +46,7 @@ const sendMail = (sendTo) => {
             return console.log(error);
         }
 
-        console.log('Message sent: ' + info.response);
+        console.log('Message sent to "' + sendTo + '"' + info);
     });
 
 }
@@ -61,10 +61,10 @@ app.post('/', async(req, res) => {
             sendMail(req.body.email);
             res.status(200).send({ message: "Email sent!" });
         } else {
-            res.status(400).send({ message: "Incorrect email address...", error: "The input is not a valid email address" });
+            res.status(400).send({ message: "Incorrect destination address error", error: "The input is not a valid email address" });
         }
     } catch (err) {
-        res.status(400).send({ message: "Email failed to send", error: err });
+        res.status(400).send({ message: "Transporter error", error: err });
     }
 })
 
