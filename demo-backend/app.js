@@ -46,7 +46,7 @@ const sendMail = (sendTo) => {
             return console.log(error);
         }
 
-        console.log('Message sent to "' + sendTo + '"' + info);
+        console.log('Message sent to "' + sendTo + '"' + info.response);
     });
 
 }
