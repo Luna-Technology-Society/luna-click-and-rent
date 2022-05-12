@@ -26,6 +26,7 @@
     "nodemailer": "^6.7.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-loader": "^2.4.7",
     "styled-components": "^5.3.5"
   }
 }

@@ -56,10 +56,13 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', async(req, res) => {
-    const { email } = req.body;
     try {
-        sendMail(email);
-        res.status(200).send({ message: "Email sent!" });
+        if (req.body.email && req.body.email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
+            sendMail(req.body.email);
+            res.status(200).send({ message: "Email sent!" });
+        } else {
+            res.status(400).send({ message: "Incorrect email address...", error: "The input is not a valid email address" });
+        }
     } catch (err) {
         res.status(400).send({ message: "Email failed to send", error: err });
     }
