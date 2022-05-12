@@ -58,7 +58,7 @@ app.get('/', (req, res) => {
 app.post('/', async(req, res) => {
     try {
         const dt = new Date();
-        console.log("Attempting to sent mail to \"" + req.body.email + "\" at " + dt.toUTCString + " (" + dt.getTime + ")");
+        console.log("Attempting to sent mail to \"" + req.body.email + "\" at " + dt.toUTCString() + " (" + dt.getTime() + ")");
         if (req.body.email && req.body.email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
             sendMail(req.body.email);
             res.status(200).send({ message: "Email sent!" });
