@@ -1,4 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+body {
+    background-image: url("../images/background-lock.jpg");
+    background-repeat: no-repeat;
+    background-position: center top;
+    height: 100vh;
+}
+
 * {
     font-family: Roboto, monospace;
 }

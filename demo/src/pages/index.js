@@ -13,7 +13,7 @@ const IndexPage = () => {
     setInputVal(e.target.value);
   }
 
-  const handleClick = (e) => {
+  const handleClick = () => {
     if (inputVal && inputVal.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
       setIsLoaded(false);
       axios({
@@ -43,6 +43,12 @@ const IndexPage = () => {
 
   }
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode == 13) {
+      handleClick();
+    }
+  }
+
   return (
     <main style={mainContainer}>
       <div style={pageStyles}>
@@ -54,12 +60,12 @@ const IndexPage = () => {
             </h1>
             <label style={emailLabel} name="email">Your email</label>
             <br />
-            <input style={emailInput} value={inputVal} onChange={handleChange} name="email" placeholder="johndoe@gmail.com" type="email" />
+            <input style={emailInput} value={inputVal} onChange={handleChange} name="email" placeholder="johndoe@gmail.com" type="email" onKeyDown={handleKeyDown} />
             <br />
             <button type="submit" style={emailButton} onClick={handleClick}>
               Generate
             </button>
-            <div style={resultOut}>{resultVal}</div>
+            <div style={resultVal === "Successfully sent!" ? { ...resultOut, color: "#1daf0f" } : resultOut}>{resultVal}</div>
           </>
         ) : (
           <>
@@ -134,7 +140,8 @@ const emailButton = {
 const resultOut = {
   fontSize: 20,
   marginTop: 15,
-  textAlign: "center"
+  textAlign: "center",
+  color: "#d8080c"
 }
 
 export default IndexPage
