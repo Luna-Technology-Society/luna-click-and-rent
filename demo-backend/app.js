@@ -23,11 +23,11 @@ app.use(cors({ origin: 'https://clickandrent-demo.web.app' }));
 
 const sendMail = (sendTo) => {
     let html = await readFile('email.html', 'utf8');
-    let template = handlebars.compile(html);
-    let data = {
-        code: "4353"
-    };
-    let htmlToSend = template(data);
+    // let template = handlebars.compile(html);
+    // let data = {
+    //     code: "4353"
+    // };
+    // let htmlToSend = template(data);
 
     // Create the transporter with the required configuration for Outlook
     // change the user and pass !
@@ -50,7 +50,7 @@ const sendMail = (sendTo) => {
         to: sendTo, // list of receivers (who receives)
         subject: 'Hello ', // Subject line
         text: 'Hello world ', // plaintext body
-        html: htmlToSend
+        html: html
           // html body
     };
 
