@@ -3,8 +3,13 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require("nodemailer");
 const dotenv = require('dotenv');
+const { promisify } = require('util');
 const fs = require('fs');
+const handlebars = require('handlebars');
+
 dotenv.config({ path: '.env' });
+
+const readFile = promisify(fs.readFile);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,6 +22,13 @@ app.use(bodyParser.json());
 app.use(cors({ origin: 'https://clickandrent-demo.web.app' }));
 
 const sendMail = (sendTo) => {
+    let html = await readFile('email.html', 'utf8');
+    let template = handlebars.compile(html);
+    let data = {
+        code: "4353"
+    };
+    let htmlToSend = template(data);
+
     // Create the transporter with the required configuration for Outlook
     // change the user and pass !
     var transporter = nodemailer.createTransport({
@@ -38,7 +50,7 @@ const sendMail = (sendTo) => {
         to: sendTo, // list of receivers (who receives)
         subject: 'Hello ', // Subject line
         text: 'Hello world ', // plaintext body
-        html: await fs.readFile('./email.html', 'utf8')
+        html: htmlToSend
           // html body
     };
 
