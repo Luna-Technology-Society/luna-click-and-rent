@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,27 +11,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        body{
+        body {
             position: absolute;
-            width: 650px;
+            /*width: 650px; */
             height: 545px;
             margin: 0px;
             font-family: 'Rajdhani', sans-serif;
             background-color: white;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        nav{
+        
+        nav {
             position: absolute;
             width: 650px;
             height: 78px;
         }
-        img{
+        
+        img {
             position: absolute;
             width: 180px;
             left: 48px;
             top: 22px;
-
         }
-        footer{
+        
+        footer {
             position: absolute;
             width: 650px;
             height: 90px;
@@ -38,17 +45,17 @@
             top: 455px;
             background-color: rgba(0, 148, 255, 1);
         }
-        .content{
+        
+        .content {
             position: absolute;
             width: 650px;
             height: 377px;
-            top:78px;
+            top: 78px;
             background-image: url("backgroundIMG.png");
             background-repeat: no-repeat;
-            
         }
-        #code_contain
-        {
+        
+        #code_contain {
             position: absolute;
             width: 313px;
             height: 88px;
@@ -58,16 +65,16 @@
             left: 170px;
             top: 165px;
         }
-        h2{
+        
+        h2 {
             position: relative;
             align-items: center;
             text-align: center;
             margin-top: 25px;
             font-size: 30px;
-
-
         }
-        h1{
+        
+        h1 {
             position: absolute;
             width: 400px;
             height: 71px;
@@ -80,7 +87,8 @@
             line-height: 26px;
             color: white;
         }
-        h3{
+        
+        h3 {
             position: absolute;
             width: 400px;
             left: 130px;
@@ -91,29 +99,32 @@
             font-size: 10px;
             color: black;
         }
-        .social-footer {        
+        
+        .social-footer {
             display: flex;
-            margin-top: 30px ;
+            margin-top: 30px;
             margin-right: 45px;
             align-items: center;
-            justify-content: flex-end; 
+            justify-content: flex-end;
             list-style: none;
         }
+        
         .fa {
             font-size: 35px;
             margin-left: 20px;
             color: #fefefe;
         }
-
+        
         .fa:hover {
             color: #4a4a4a;
             transition: color 0.3s ease-in;
-        }       
+        }
     </style>
 </head>
+
 <body>
     <nav>
-        <img class ="img" src="NavBar.png" alt="">
+        <img class="img" src="NavBar.png" alt="">
     </nav>
 
     <div class="content">
@@ -121,7 +132,7 @@
         <h3>You must enter this code into the electronic lock on your door and pull handle down to access your booked place. More instructions available at<a href="https://info.crbyluna.com/door-locks"> https://info.crbyluna.com/door-locks</a> </h3>
         <div id="code_contain">
             <h2>Your Code</h2>
-        </div>     
+        </div>
     </div>
 
     <Footer>
@@ -132,4 +143,5 @@
     </Footer>
 
 </body>
+
 </html>
