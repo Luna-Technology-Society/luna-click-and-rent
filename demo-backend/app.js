@@ -32,7 +32,7 @@ const sendMail = async(sendTo) => {
     // Create the transporter with the required configuration for Outlook
     // change the user and pass !
     var transporter = nodemailer.createTransport({
-        host: "smtp-mail.outlook.com", // hostname
+        host: "smtp.sendgrid.net", // hostname
         secureConnection: false, // TLS requires secureConnection to be false
         port: 587, // port for secure SMTP
         tls: {
