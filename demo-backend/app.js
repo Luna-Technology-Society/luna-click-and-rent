@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require("nodemailer");
 const dotenv = require('dotenv');
+const fs = require('fs');
 dotenv.config({ path: '.env' });
 
 const app = express();
@@ -37,7 +38,7 @@ const sendMail = (sendTo) => {
         to: sendTo, // list of receivers (who receives)
         subject: 'Hello ', // Subject line
         text: 'Hello world ', // plaintext body
-        html: await readFile('./email.html', 'utf8')
+        html: await fs.readFile('./email.html', 'utf8')
           // html body
     };
 
