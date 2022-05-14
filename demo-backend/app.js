@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({ origin: 'https://clickandrent-demo.web.app' }));
 
-const sendMail = (sendTo) => {
+const sendMail = async(sendTo) => {
     let html = await readFile('email.html', 'utf8');
     // let template = handlebars.compile(html);
     // let data = {
@@ -51,7 +51,7 @@ const sendMail = (sendTo) => {
         subject: 'Hello ', // Subject line
         text: 'Hello world ', // plaintext body
         html: html
-          // html body
+            // html body
     };
 
     // send mail with defined transport object
