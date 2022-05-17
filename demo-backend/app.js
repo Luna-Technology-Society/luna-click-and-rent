@@ -51,7 +51,6 @@ const sendMail = async(sendTo) => {
         subject: 'Hello ', // Subject line
         text: 'Hello world ', // plaintext body
         html: html
-            // html body
     };
 
     // send mail with defined transport object
@@ -59,7 +58,6 @@ const sendMail = async(sendTo) => {
         if (error) {
             return console.log(error);
         }
-
         console.log('Message sent to "' + sendTo + '"' + info.response);
     });
 
