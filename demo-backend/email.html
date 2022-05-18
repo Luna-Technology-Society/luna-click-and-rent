@@ -2,38 +2,124 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email</title>
-
-
-
+    <meta charset="UTF-8" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /> -->
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Rajdhani&display=swap");
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100vw;
+            height: 545px;
+            margin: 0px;
+            padding: 0px;
+            font-family: "Rajdhani", sans-serif;
+            background-color: white;
+        }
+        
+        .content {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            padding: 0px 10%;
+            box-sizing: border-box;
+        }
+        
+        #code_contain {
+            width: 200px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: rgba(62, 62, 62);
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            color: white;
+            margin-top: 10px;
+            padding-top: 5px;
+        }
+        
+        #code_contain h4 {
+            font-weight: 300;
+            margin: 0;
+        }
+        
+        #code_contain h2 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 0;
+        }
+        
+        .header {
+            text-align: center;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 2rem;
+            color: rgb(17, 17, 17);
+        }
+        
+        .description {
+            text-align: center;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 1rem;
+            color: black;
+            margin-top: 40px;
+        }
+        
+        .social-footer {
+            display: flex;
+            margin-top: 30px;
+            margin-right: 45px;
+            align-items: center;
+            justify-content: center;
+            list-style: none;
+            height: 100px;
+            width: 100%;
+            padding: 15px 40px;
+            box-sizing: border-box;
+            background-color: rgba(0, 148, 255, 1);
+            color: white;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .social-footer .icon {
+            font-size: 2rem;
+            margin-left: 20px;
+            align-items: flex-end;
+            color: #fefefe;
+        }
+    </style>
 </head>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<body style="position: absolute;width: 650px;height: 545px;margin: 0px;font-family: 'Rajdhani', sans-serif;background-color: white;">
-
-    <nav style="position: absolute;width: 650px;height: 78px;">
-        <img class="img" src="NavBar.png" alt="" style="position: absolute;width: 180px;left: 48px;top: 22px;">
-    </nav>
-
-    <div class="content" style="position: absolute;width: 650px;height: 377px;top: 78px;background-image: url(backgroundIMG.png);background-repeat: no-repeat;">
-        <h1 style="position: absolute;width: 400px;height: 71px;left: 130px;top: 90px;text-align: center;font-style: normal;font-weight: 500;font-size: 20px;line-height: 26px;color: white;">Your door code is here! Please use this door code to unlock your recently booked room with _.</h1>
-        <h3 style="position: absolute;width: 400px;left: 130px;top: 255px;text-align: center;font-style: normal;font-weight: 500;font-size: 10px;color: black;">You must enter this code into the electronic lock on your door and pull handle down to access your booked place. More instructions available at<a href="https://info.crbyluna.com/door-locks"> https://info.crbyluna.com/door-locks</a> </h3>
-        <div id="code_contain" style="position: absolute;width: 313px;height: 88px;background-color: rgba(62, 62, 62, 1);box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);color: white;left: 170px;top: 165px;">
-            <h2 style="position: relative;align-items: center;text-align: center;margin-top: 25px;font-size: 30px;">Your Code</h2>
+<body>
+    <div class="content">
+        <h1 class="header">
+            Your door code is here! Please use this door code to unlock your recently booked room with _.
+        </h1>
+        <div id="code_contain">
+            <h4>Your Code</h4>
+            <h2>0000</h2>
         </div>
+        <h3 class="description">
+            You must enter this code into the electronic lock on your door and pull handle down to access your booked place. More instructions available at
+            <a href="https://info.crbyluna.com/door-locks">
+                https://info.crbyluna.com/door-locks</a>
+        </h3>
     </div>
-
-    <footer style="position: absolute;width: 650px;height: 90px;left: 0px;top: 455px;background-color: rgba(0, 148, 255, 1);">
-        <div class="social-footer" style="display: flex;margin-top: 30px;margin-right: 45px;align-items: center;justify-content: flex-end;list-style: none;">
-            <li><a href="https://www.facebook.com/"><i class="fa fa-facebook" aria-hidden="true" style="display: inline-block;font: normal normal normal 14px/1 FontAwesome;font-size: 35px;text-rendering: auto;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;margin-left: 20px;color: #fefefe;"></i></a></li>
-            <li><a href="https://twitter.com/?lang=en"><i class="fa fa-twitter" aria-hidden="true" style="display: inline-block;font: normal normal normal 14px/1 FontAwesome;font-size: 35px;text-rendering: auto;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;margin-left: 20px;color: #fefefe;"></i></a></li>
-        </div>
-    </footer>
-
+    <div class="social-footer">
+        <span>Follow us on our social media platforms!</span>
+        <a href="https://www.facebook.com/"><img src="fbs.svg" alt="" class="icon"><i aria-hidden="true"></i></a>
+        <a href="https://twitter.com/?lang=en"><img src="tws.svg" alt="" class="icon"><i aria-hidden="true"></i></a>
+    </div>
 </body>
 
 </html>
