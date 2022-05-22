@@ -49,7 +49,16 @@ const sendMail = async(sendTo) => {
         from: process.env.MAIL_USERNAME, // sender address (who sends)
         to: sendTo, // list of receivers (who receives)
         subject: 'Your door code is here!', // Subject line
-        html: html
+        html: html,
+        attachments: [{   // stream as an attachment
+            filename: 'fb-logo.svg',
+            content: fs.createReadStream('./fbs.svg'),
+            cid: "fb-logo"
+        }, {
+            filename: 'twtr-logo.svg',
+            content: fs.createReadStream('./tws.svg'),
+            cid: "twtr-logo"
+        }]
     };
 
     // send mail with defined transport object
