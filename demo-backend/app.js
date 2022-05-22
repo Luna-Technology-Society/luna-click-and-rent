@@ -61,16 +61,11 @@ const sendMail = async (sendTo) => {
                 content: fs.createReadStream('./images/twtr-logo.png'),
                 cid: "twtr-logo"
             },
-            {
-                filename: 'cr-logo.png',
-                content: fs.createReadStream('./images/cr-logo.png'),
-                cid: "cr-logo"
-            },
-            {
-                filename: 'bg.png',
-                content: fs.createReadStream('./images/bg.png'),
-                cid: "bg"
-            }
+            // {
+            //     filename: 'cr-logo.png',
+            //     content: fs.createReadStream('./images/cr-logo.png'),
+            //     cid: "cr-logo"
+            // }
         ]
     };
 
