@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({ origin: 'https://clickandrent-demo.web.app' }));
 
-const sendMail = async(sendTo) => {
+const sendMail = async (sendTo) => {
     let html = await readFile('email.html', 'utf8');
     // let template = handlebars.compile(html);
     // let data = {
@@ -50,19 +50,32 @@ const sendMail = async(sendTo) => {
         to: sendTo, // list of receivers (who receives)
         subject: 'Your door code is here!', // Subject line
         html: html,
-        attachments: [{   // stream as an attachment
-            filename: 'fb-logo.svg',
-            content: fs.createReadStream('./fbs.svg'),
-            cid: "fb-logo"
-        }, {
-            filename: 'twtr-logo.svg',
-            content: fs.createReadStream('./tws.svg'),
-            cid: "twtr-logo"
-        }]
+        attachments: [
+            {   // stream as an attachment
+                filename: 'fb-logo.png',
+                content: fs.createReadStream('./images/fb-logo.png'),
+                cid: "fb-logo"
+            },
+            {
+                filename: 'twtr-logo.png',
+                content: fs.createReadStream('./images/twtr-logo.png'),
+                cid: "twtr-logo"
+            },
+            {
+                filename: 'cr-logo.png',
+                content: fs.createReadStream('./images/cr-logo.png'),
+                cid: "cr-logo"
+            },
+            {
+                filename: 'bg.png',
+                content: fs.createReadStream('./images/bg.png'),
+                cid: "bg"
+            }
+        ]
     };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function(error, info) {
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             return console.log(error);
         }
@@ -75,7 +88,7 @@ app.get('/', (req, res) => {
     res.send('Simple get request');
 })
 
-app.post('/', async(req, res) => {
+app.post('/', async (req, res) => {
     try {
         const dt = new Date();
         console.log("Attempting to sent mail to \"" + req.body.email + "\" at " + dt.toUTCString() + " (" + dt.getTime() + ")");
