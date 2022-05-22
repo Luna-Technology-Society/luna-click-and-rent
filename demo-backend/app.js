@@ -48,8 +48,7 @@ const sendMail = async(sendTo) => {
     var mailOptions = {
         from: process.env.MAIL_USERNAME, // sender address (who sends)
         to: sendTo, // list of receivers (who receives)
-        subject: 'Hello ', // Subject line
-        text: 'Hello world ', // plaintext body
+        subject: 'Your door code is here!', // Subject line
         html: html
     };
 
