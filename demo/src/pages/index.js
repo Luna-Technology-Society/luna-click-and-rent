@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios';
 import "../styles/index.css"
 import RingLoader from "react-spinners/RingLoader";
+import EnterCode from "./entercode";
 
 // markup
 const IndexPage = () => {
@@ -44,7 +45,7 @@ const IndexPage = () => {
   }
 
   const handleKeyDown = (e) => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       handleClick();
     }
   }
@@ -66,6 +67,7 @@ const IndexPage = () => {
               Generate
             </button>
             <div style={resultVal === "Successfully sent!" ? { ...resultOut, color: "#1daf0f" } : resultOut}>{resultVal}</div>
+            <EnterCode></EnterCode>
           </>
         ) : (
           <>
