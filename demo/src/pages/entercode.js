@@ -4,27 +4,27 @@ import { useRequestDevice } from 'react-web-bluetooth';
 const UUID = "19b10000-e8f2-537e-4f6c-d104768a1214";
 function EnterCode() {
     const [chrtstc, setChrtstc] = useState();
-    // const [deviceFound, setIsConnected] = useState(false);
 
-    // const {myDevices} = useGetDevices();
     const { onClick, device } = useRequestDevice({
         acceptAllDevices: true,
         optionalServices: [UUID]
     });
 
-    // const handlePairDevice = () => {
-    //     onClick();
-    // }
+    // This function connects the door lock to the device
     const handleConnect = e => {
         console.log("Button was clicked")
-        device.gatt.connect().then((res) => {
-            console.log(res);
-            res.getPrimaryService(UUID).then(res => {
-                console.log(res)
-                res.getCharacteristics().then(res => {
+        // Following the ble protocol first I connect the device creating a server
+        device.gatt.connect().then((server) => {
+            console.log(server);
+            // then find primary service with uuid "UUID"
+            server.getPrimaryService(UUID).then(service => {
+                console.log(service)
+                // then fetch all characteristics with the service. Only one for our door lock (check /arduino-demo/lock-program.ino)
+                service.getCharacteristics().then(characteristics => {
                     try {
-                        console.log(res);
-                        setChrtstc(res[0])
+                        console.log(characteristics);
+                        // Get the first characteristic from characteristics array and save it in the state for later use.
+                        setChrtstc(characteristics[0])
                     } catch (err) {
                         console.log(err);
                     }
@@ -38,6 +38,7 @@ function EnterCode() {
 
     const handleDisconnect = () => {
         try {
+            // Disconnects the paired door lock and resets chrtstc in state.
             device.gatt.disconnect()
             setChrtstc(undefined);
             console.log("Device disconnected successfully");
