@@ -26,7 +26,7 @@ const int ledPin = LED_BUILTIN; // pin to use for the LED
 
 void setup() {
   Serial.begin(9600);
-//  while (!Serial);
+  //  while (!Serial);
 
   // set LED pin to output mode
   pinMode(ledPin, OUTPUT);
@@ -53,6 +53,9 @@ void setup() {
 
   // start advertising
   BLE.advertise();
+  
+  // The door is locked by default.
+  lockdoor();
 
   Serial.println("BLE LED Peripheral");
 }
@@ -73,11 +76,9 @@ void loop() {
       // use the value to control the LED:
       if (switchCharacteristic.written()) {
         if (switchCharacteristic.value()) {   // any value other than 0
-          Serial.println("LED on");
-          digitalWrite(ledPin, HIGH);         // will turn the LED on
+          lockdoor();
         } else {                              // a 0 value
-          Serial.println(F("LED off"));
-          digitalWrite(ledPin, LOW);          // will turn the LED off
+          unlockdoor();
         }
       }
     }
@@ -85,5 +86,17 @@ void loop() {
     // when the central disconnects, print it out:
     Serial.print(F("Disconnected from central: "));
     Serial.println(central.address());
+    // make sure the door is locked when the bluetooth device disconnects
+    lockdoor();
   }
+}
+
+void lockdoor() {
+  Serial.println("LED on");
+  digitalWrite(ledPin, HIGH);         // will turn the LED on
+};
+
+void unlockdoor() {
+  Serial.println(F("LED off"));
+  digitalWrite(ledPin, LOW);          // will turn the LED off
 }
