@@ -55,7 +55,7 @@ const IndexPage = () => {
       <div style={pageStyles}>
         {isLoaded ? (
           <>
-            <title>Click and rent</title>
+            {/* <title>Click and rent</title>
             <h1 style={headingStyles}>
               Please enter your email to receive the code.
             </h1>
@@ -66,7 +66,7 @@ const IndexPage = () => {
             <button type="submit" style={emailButton} onClick={handleClick}>
               Generate
             </button>
-            <div style={resultVal === "Successfully sent!" ? { ...resultOut, color: "#1daf0f" } : resultOut}>{resultVal}</div>
+            <div style={resultVal === "Successfully sent!" ? { ...resultOut, color: "#1daf0f" } : resultOut}>{resultVal}</div> */}
             <EnterCode></EnterCode>
           </>
         ) : (

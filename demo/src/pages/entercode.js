@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useGetDevices, useGetCharacteristic, useGetPrimaryService, useGetServer, useReadValue, useRequestDevice, writeValue } from 'react-web-bluetooth';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useState } from 'react';
+import { useRequestDevice } from 'react-web-bluetooth';
 
 const UUID = "19b10000-e8f2-537e-4f6c-d104768a1214";
 function EnterCode() {
-    const [inputVal, setInputVal] = useState("");
     const [chrtstc, setChrtstc] = useState();
+    // const [deviceFound, setIsConnected] = useState(false);
 
     // const {myDevices} = useGetDevices();
     const { onClick, device } = useRequestDevice({
@@ -13,24 +12,11 @@ function EnterCode() {
         optionalServices: [UUID]
     });
 
-    // const service = useGetPrimaryService({device: device})
-    // const characteristic = useGetCharacteristic({service, bluetoothCharacteristicUUID: "19b10000-e8f2-537e-4f6c-d104768a1214"}, ()=> {
-    //     console.log("this is a promise")
-    // });
-
-
-
-    const handleChange = (e) => {
-        setInputVal(e.target.value);
-    }
-    const handleKeyDown = (e) => {
-        if (e.keyCode === 13) {
-            handleClick();
-        }
-    }
-    const handleClick = e => {
+    // const handlePairDevice = () => {
+    //     onClick();
+    // }
+    const handleConnect = e => {
         console.log("Button was clicked")
-        console.log(inputVal)
         device.gatt.connect().then((res) => {
             console.log(res);
             res.getPrimaryService(UUID).then(res => {
@@ -53,27 +39,28 @@ function EnterCode() {
     const handleDisconnect = () => {
         try {
             device.gatt.disconnect()
+            setChrtstc(undefined);
             console.log("Device disconnected successfully");
         } catch (err) {
-            console.log("Failed to disconnect device")
+            console.log("Failed to disconnect device", err)
         }
         
     }
 
     const switchLED = (val) => {
         console.log(chrtstc);
-        console.log(val);
         let output, view;
+        // Create buffer required to send data through ble
         const buffer = new ArrayBuffer(16);
         switch(val){
-            case "0":
+            case 0:
+                // if you want to turn the led off set output to buffer with fist value of 0
                 view = new DataView(buffer);
                 view.setInt32(0, 0);
                 output = view;
-                console.log("Case is 0")
                 break;
-            case "1":
-                console.log("Case is 1")
+            case 1:
+                // if you want to turn the led on set output to buffer with fist value negative
                 view = new DataView(buffer);
                 view.setInt32(0, 30000000);
                 output = view
@@ -81,27 +68,43 @@ function EnterCode() {
             default:
                 return;
         }
+        // Sends the buffer to the connected bluetooth device
         chrtstc.writeValue(output).then(res=>{console.log(res)}).catch(err=>console.log(err))
     }
 
     return (<>
-        {!device && <button onClick={onClick}>Select device to pair</button>}
-        {device && <>
-            <span>Do you want to connect to device "{device.name}"?</span>
-            <button onClick={handleClick}>Connect device</button>
+        {!device && <button style={buttonStyles} onClick={onClick}>Select device to pair</button>}
+        {!chrtstc && device && <>
+            <span style={labels}>Do you want to connect to device "{device.name}"?</span>
+            <button style={buttonStyles} onClick={handleConnect}>Connect device</button>
         </>}
-        {/* <ul>
-            {myDevices && myDevices.map((device)=>(<li>{device}</li>))}
-        </ul> */}
         {chrtstc && <>
-            <span>Enter code:</span>
-            <input value={inputVal} onChange={handleChange} name="code" placeholder="0 or 1" onKeyDown={handleKeyDown} />
-            <button onClick={()=>{switchLED(inputVal)}}>Send value</button>
+            <span style={labels}>Control the door lock</span>
+            <button style={buttonStyles} onClick={()=>{switchLED(1)}}>Lock Door</button> <button style={buttonStyles} onClick={()=>{switchLED(0)}}>Unlock door</button> 
         </>}
         <br/>
         <br/>
-        <button onClick={handleDisconnect}>Disonnect device</button>
+        {chrtstc && <button style={{...buttonStyles, backgroundColor: "#DB3B3B"}} onClick={handleDisconnect}>Disonnect device</button>}
     </>);
 }
+
+
+const labels = {
+    fontWeight: "bold",
+    fontSize: 16,
+    verticalAlign: "5%",
+    width: "100%",
+  }
+  
+  const buttonStyles = {
+    height: 36,
+    width: "100%",
+    fontSize: 17,
+    marginTop: 15,
+    border: "none",
+    backgroundColor: "#0d96a8",
+    cursor: "pointer",
+    color: "white"
+  }
 
 export default EnterCode;
