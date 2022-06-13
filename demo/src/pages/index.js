@@ -57,7 +57,7 @@ const IndexPage = () => {
           <>
             {/* <title>Click and rent</title>
             <h1 style={headingStyles}>
-              Please enter your email to receive the code.
+              Provide your email and access code to enable automatic door unlock through bluetooth.
             </h1>
             <label style={emailLabel} name="email">Your email</label>
             <br />
