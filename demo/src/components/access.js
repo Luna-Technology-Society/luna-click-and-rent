@@ -227,7 +227,7 @@ const labels = {
     fontWeight: "bold",
     fontSize: 16,
     verticalAlign: "5%",
-    width: "400px",
+    width: "90%",
     textAlign: "center",
     justifyContent: "center"
 }

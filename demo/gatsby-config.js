@@ -6,11 +6,11 @@ module.exports = {
   plugins: [{
     resolve: `gatsby-plugin-manifest`,
     options: {
-      name: `CodeWithLinda`,
-      short_name: `CodeWithLinda`,
+      name: `Click & Rent Demo`,
+      short_name: `C&R Demo`,
       start_url: `/`,
-      background_color: `#212121`,
-      theme_color: `#f39ca9`,
+      background_color: `#ffffff`,
+      theme_color: `#0d96a8`,
       display: `standalone`,
       icon: `src/images/icon.png`
     },
