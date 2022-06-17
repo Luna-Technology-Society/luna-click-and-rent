@@ -162,7 +162,7 @@ function DoorLockBLE() {
             </>
             }
             {!chrtstc && activeDevice && <>
-                <span style={labels}>Pairing successfull. Automatically connecting to device... "{activeDevice.name}"?</span>
+                <span style={labels}>Pairing successful. Automatically connecting to device... "{activeDevice.name}"?</span>
                 <RingLoader color={'black'} loading={!isLoaded} size={100} css={spinnerStyle} />
                 {/* <button style={buttonStyles} onClick={()=>{handleConnect(activeDevice)}}>Connect device</button> */}
                 {/* Not working yet. Will work soon. */}
@@ -170,8 +170,8 @@ function DoorLockBLE() {
             </>}
             {chrtstc && <>
                 <span style={labels}>Your door is currently {lockStatus ? <b style={{ color: "#DB3B3B" }}>LOCKED</b> : <b style={{ color: "#1BAB1B" }}>UNLOCKED</b>}</span>
-                <button style={buttonStyles} onClick={() => { switchLED(1) }}>Lock Door</button>
-                <button style={buttonStyles} onClick={() => { switchLED(0) }}>Unlock door</button>
+                <button style={{...buttonStyles , backgroundColor:"#d27832"}} onClick={() => { switchLED(1) }}>Lock Door</button>
+                <button style={{...buttonStyles , backgroundColor:"#61d278"}} onClick={() => { switchLED(0) }}>Unlock door</button>
             </>}
             <br />
             <br />

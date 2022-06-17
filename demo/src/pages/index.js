@@ -79,6 +79,15 @@ const IndexPage = () => {
   )
 }
 
+const spinnerStyle = `
+display: block;
+margin: 0 auto;
+border-color: red;
+position: absolute;
+top: 50%;
+left: 50%;
+`;
+
 const mainContainer = {
   display: "flex",
   flexDirection: "column",
