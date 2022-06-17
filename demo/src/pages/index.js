@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from 'axios';
 import "../styles/index.css"
 import RingLoader from "react-spinners/RingLoader";
-import EnterCode from "./entercode";
 
 // markup
 const IndexPage = () => {
@@ -55,7 +54,7 @@ const IndexPage = () => {
       <div style={pageStyles}>
         {isLoaded ? (
           <>
-            {/* <title>Click and rent</title>
+            <title>Click and rent</title>
             <h1 style={headingStyles}>
               Provide your email and access code to enable automatic door unlock through bluetooth.
             </h1>
@@ -66,8 +65,7 @@ const IndexPage = () => {
             <button type="submit" style={emailButton} onClick={handleClick}>
               Generate
             </button>
-            <div style={resultVal === "Successfully sent!" ? { ...resultOut, color: "#1daf0f" } : resultOut}>{resultVal}</div> */}
-            <EnterCode></EnterCode>
+            <div style={resultVal === "Successfully sent!" ? { ...resultOut, color: "#1daf0f" } : resultOut}>{resultVal}</div>
           </>
         ) : (
           <>
