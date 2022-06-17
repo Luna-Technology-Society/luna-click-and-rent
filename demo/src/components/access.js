@@ -157,7 +157,7 @@ function DoorLockBLE() {
         <div style={container}>
             {!activeDevice && JSON.stringify(lockData) !== "{}" && 
             <>
-            <span style={labels}>Your lock is called "{lockData.name}". Please press the button below, find and pair "{lockData.name}"</span>
+            <span style={labels}>Your lock is called "{lockData.deviceName}". Please press the button below, find and pair "{lockData.deviceName}"</span>
             <button style={buttonStyles} onClick={handlePair}>Pair lock</button>
             </>
             }
