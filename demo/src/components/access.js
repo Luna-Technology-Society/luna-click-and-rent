@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from '@reach/router'
+// import { Redirect } from '@reach/router'
 import { useRequestDevice, useGetDevices } from 'react-web-bluetooth';
+import RingLoader from "react-spinners/RingLoader";
 
 const ENCRYPTION_KEY = "2ce0b20d-f4cf-40b5-9a8e-6cb0859f3dc6"; // temporary encryption
 const SERVICE_UUID = "19b10000-e8f2-537e-4f6c-d104768a1214"; // UUID of the ble service used by the arduino
