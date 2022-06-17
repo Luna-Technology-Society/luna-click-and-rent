@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useRequestDevice, useGetDevices } from 'react-web-bluetooth';
 import RingLoader from "react-spinners/RingLoader";
 
-const ENCRYPTION_KEY = "2ce0b20d-f4cf-40b5-9a8e-6cb0859f3dc6"; // temporary encryption
+
 const SERVICE_UUID = "19b10000-e8f2-537e-4f6c-d104768a1214"; // UUID of the ble service used by the arduino
 
 const getDecodedData = (encdata) => {
@@ -25,7 +25,7 @@ function DoorLockBLE() {
     const [activeDevice, setActiveDevice] = useState(undefined);
     const [lockStatus, setLockStatus] = useState(true);
     const [lockData, setLockData] = useState({});
-    const [isLoaded, setIsLoaded] = useState(true);
+    const [autoConnect, setAutoConnect] = useState(true);
 
     useEffect(() => {
         if (typeof window !== undefined) {
@@ -46,19 +46,21 @@ function DoorLockBLE() {
     useEffect(() => {
         if (device && device.name && device.name === lockData.deviceName) {
             setActiveDevice(device);
-            handleConnect(device);
+            if (autoConnect) {
+                handleConnect(device);
+            }
         } else if (device && device.name && device.name !== lockData.deviceName) {
             setErrorM("Incorrect device paired... Please pair \"" + lockData.deviceName + "\"");
         }
-        // else if (devices && devices.length > 0 && lockData.deviceName && !activeDevice) {
-        //     for (let i = 0; i < devices.length; i++) {
-        //         if (devices[i] && devices[i].name && devices[i].gatt && devices[i].name === lockData.deviceName) {
-        //             console.log("Found device: ", devices[i].name, devices[i]);
-        //             setActiveDevice(devices[i]);
-        //             handleConnect(devices[i]);
-        //         }
-        //     }
-        // }
+        else if (autoConnect && devices && devices.length > 0 && lockData.deviceName && !activeDevice) {
+            for (let i = 0; i < devices.length; i++) {
+                if (devices[i] && devices[i].name && devices[i].gatt && devices[i].name === lockData.deviceName) {
+                    console.log("Found device: ", devices[i].name, devices[i]);
+                    setActiveDevice(devices[i]);
+                    handleConnect(devices[i]);
+                }
+            }
+        }
         // else if (devices && devices.length > 0 && !activeDevice) {
         //     setActiveDevice(devices[0]);
         // }
@@ -70,41 +72,51 @@ function DoorLockBLE() {
         }
     }
 
+    const handleAutoConnectToggle = () => {
+        if (autoConnect) {
+            setAutoConnect(false);
+        } else {
+            setAutoConnect(true);
+        }
+    }
+
     // This function connects the door lock to the device
     const handleConnect = (connectToDevice) => {
-        console.log("Attempting to connect to device...");
-        // Following the ble protocol first I connect the device creating a server
-        console.log("Device: ", connectToDevice)
-        connectToDevice.gatt.connect().then((server) => {
-            console.log(server);
-            // then find primary service with uuid "SERVICE_UUID"
-            server.getPrimaryService(SERVICE_UUID).then(service => {
-                console.log(service)
-                // then fetch all characteristics with the service. Only one for our door lock (check /arduino-demo/lock-program.ino)
-                service.getCharacteristics().then(characteristics => {
-                    try {
-                        console.log(characteristics);
-                        // Get the first characteristic from characteristics array and save it in the state for later use.
-                        setChrtstc(characteristics[0])
-                        setErrorM("");
-                    } catch (err) {
-                        console.log(err);
-                        setErrorM("Paired with incorrect door. Please pair with correct door.");
-                    }
-                }).catch(err => {
+        if (!chrtstc) {
+            console.log("Attempting to connect to device...");
+            // Following the ble protocol first I connect the device creating a server
+            console.log("Device: ", connectToDevice)
+            connectToDevice.gatt.connect().then((server) => {
+                console.log(server);
+                // then find primary service with uuid "SERVICE_UUID"
+                server.getPrimaryService(SERVICE_UUID).then(service => {
+                    console.log(service)
+                    // then fetch all characteristics with the service. Only one for our door lock (check /arduino-demo/lock-program.ino)
+                    service.getCharacteristics().then(characteristics => {
+                        try {
+                            console.log(characteristics);
+                            // Get the first characteristic from characteristics array and save it in the state for later use.
+                            setChrtstc(characteristics[0])
+                            setErrorM("");
+                        } catch (err) {
+                            console.log(err);
+                            setErrorM("Paired with incorrect door. Please pair with correct door.");
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                        setErrorM(err.message);
+                    })
+                }
+                ).catch(err => {
                     console.log(err)
                     setErrorM(err.message);
-                })
-            }
-            ).catch(err => {
-                console.log(err)
-                setErrorM(err.message);
 
+                })
+            }).catch((err) => {
+                console.log(err)
+                setErrorM("Could not connect to lock. Make sure bluetooth is turned on, and the lock is on and in range.");
             })
-        }).catch((err) => {
-            console.log(err)
-            setErrorM("Could not connect to lock. Make sure bluetooth is turned on, and the lock is on and in range.");
-        })
+        }
     }
 
     const handleDisconnect = () => {
@@ -155,23 +167,32 @@ function DoorLockBLE() {
 
     return (
         <div style={container}>
-            {!activeDevice && JSON.stringify(lockData) !== "{}" && 
-            <>
-            <span style={labels}>Your lock is called "{lockData.deviceName}". Please press the button below, find and pair "{lockData.deviceName}"</span>
-            <button style={buttonStyles} onClick={handlePair}>Pair lock</button>
-            </>
+            {!activeDevice && JSON.stringify(lockData) !== "{}" &&
+                <>
+                    <span style={labels}>Your lock is called "{lockData.deviceName}". Please press the button below, find and pair "{lockData.deviceName}"</span>
+                    <button style={buttonStyles} onClick={handlePair}>Pair lock</button>
+                </>
             }
             {!chrtstc && activeDevice && <>
-                <span style={labels}>Pairing successful. Automatically connecting to device... "{activeDevice.name}"?</span>
-                <RingLoader color={'black'} loading={!isLoaded} size={100} css={spinnerStyle} />
-                {/* <button style={buttonStyles} onClick={()=>{handleConnect(activeDevice)}}>Connect device</button> */}
+                {
+                    autoConnect ?
+                        <>
+                            <span style={labels}>Pairing successful. Automatically connecting to device... "{activeDevice.name}"?</span>
+                            <RingLoader color={'black'} loading={true} size={100} css={spinnerStyle} />
+                        </> :
+                        <>
+                            <span style={labels}>Device is paired. Press "Connect Lock" to connect to: "{activeDevice.name}"</span>
+                            <button style={buttonStyles} onClick={() => { handleConnect(activeDevice) }}>Connect Lock</button>
+                        </>
+                }
                 {/* Not working yet. Will work soon. */}
                 {/* <button style={{...buttonStyles, backgroundColor: "#DB3B3B"}} onClick={handleUnpair}>Unpair device</button> */}
             </>}
             {chrtstc && <>
-                <span style={labels}>Your door is currently {lockStatus ? <b style={{ color: "#DB3B3B" }}>LOCKED</b> : <b style={{ color: "#1BAB1B" }}>UNLOCKED</b>}</span>
-                <button style={{...buttonStyles , backgroundColor:"#d27832"}} onClick={() => { switchLED(1) }}>Lock Door</button>
-                <button style={{...buttonStyles , backgroundColor:"#61d278"}} onClick={() => { switchLED(0) }}>Unlock door</button>
+                <span style={labels}>Your door is currently&nbsp;{lockStatus ? <b style={{ color: "#DB3B3B" }}>LOCKED</b> : <b style={{ color: "#1BAB1B" }}>UNLOCKED</b>}</span>
+                <span style={labels}>Enable automatic connection: <input style={{ width: 18, height: 18 }} type="checkbox" checked={autoConnect} onClick={handleAutoConnectToggle} /></span>
+                <button style={{ ...buttonStyles, backgroundColor: "#d27832" }} onClick={() => { switchLED(1) }}>Lock Door</button>
+                <button style={{ ...buttonStyles, backgroundColor: "#1BAB1B" }} onClick={() => { switchLED(0) }}>Unlock door</button>
             </>}
             <br />
             <br />
@@ -198,11 +219,15 @@ const container = {
 }
 
 const labels = {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
     fontWeight: "bold",
     fontSize: 16,
     verticalAlign: "5%",
-    width: "100%",
-    textAlign: "center"
+    width: "400px",
+    textAlign: "center",
+    justifyContent: "center"
 }
 
 const buttonStyles = {
