@@ -45,6 +45,8 @@ function DoorLockBLE() {
         if (device && device.name && device.name === lockData.deviceName) {
             setActiveDevice(device);
             handleConnect(device);
+        } else if (device && device.name && device.name !== lockData.deviceName) {
+            setErrorM("Incorrect device paired... Please pair \"" + lockData.deviceName + "\"");
         }
         // else if (devices && devices.length > 0 && lockData.deviceName && !activeDevice) {
         //     for (let i = 0; i < devices.length; i++) {
@@ -151,10 +153,11 @@ function DoorLockBLE() {
 
     return (
         <div style={container}>
-            {!activeDevice && <button style={buttonStyles} onClick={handlePair}>Select device to pair</button>}
+            {!activeDevice && <button style={buttonStyles} onClick={handlePair}>Your lock is called "{lockData.name}". Please press the button below, find and pair "{lockData.name}"</button>}
             {!chrtstc && activeDevice && <>
-                <span style={labels}>Automatically connecting to device... "{activeDevice.name}"?</span>
-                <button style={buttonStyles} onClick={()=>{handleConnect(activeDevice)}}>Connect device</button>
+                <span style={labels}>Pairing successfull. Automatically connecting to device... "{activeDevice.name}"?</span>
+                <RingLoader color={'black'} loading={!isLoaded} size={100} css={spinnerStyle} />
+                {/* <button style={buttonStyles} onClick={()=>{handleConnect(activeDevice)}}>Connect device</button> */}
                 {/* Not working yet. Will work soon. */}
                 {/* <button style={{...buttonStyles, backgroundColor: "#DB3B3B"}} onClick={handleUnpair}>Unpair device</button> */}
             </>}
