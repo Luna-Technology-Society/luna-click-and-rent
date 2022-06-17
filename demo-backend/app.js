@@ -3,13 +3,19 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require("nodemailer");
 const dotenv = require('dotenv');
-const { promisify } = require('util');
 const fs = require('fs');
-const handlebars = require('handlebars');
+const path = require('path');
+const hbs = require('nodemailer-express-handlebars')
+
+// database demo
+const database = {
+    "0": {
+        "deviceName": "Door 1",
+        "entryKey": 1610
+    }
+}
 
 dotenv.config({ path: '.env' });
-
-const readFile = promisify(fs.readFile);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,16 +27,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({ origin: 'https://clickandrent-demo.web.app' }));
 
-const sendMail = async (sendTo) => {
-    let html = await readFile('email.html', 'utf8');
-    // let template = handlebars.compile(html);
-    // let data = {
-    //     code: "4353"
-    // };
-    // let htmlToSend = template(data);
+const getLinkForUser = () => {
+    const HOST_ADDRESS = "https://clickandrent-demo.web.app/app/access/"
+    const URI = encodeURIComponent(JSON.stringify(database["0"]));
+    return HOST_ADDRESS + URI;
+}
 
-    // Create the transporter with the required configuration for Outlook
-    // change the user and pass !
+const sendMail = async (sendTo) => {
+    // Transporter with the required configuration for Outlook
     var transporter = nodemailer.createTransport({
         host: "smtp-mail.outlook.com", // hostname
         secureConnection: false, // TLS requires secureConnection to be false
@@ -44,12 +48,28 @@ const sendMail = async (sendTo) => {
         }
     });
 
+    const hanglebarOptions = {
+        viewEngine: {
+            extName: ".handlebars",
+            partialDir: path.resolve('./'),
+            defaultLayout: false
+        }, 
+        viewPath: path.resolve('./'),
+        extName: ".handlebars"
+    }
+
+    transporter.use('compile', hbs(hanglebarOptions))
+
     // setup e-mail data, even with unicode symbols
     var mailOptions = {
         from: process.env.MAIL_USERNAME, // sender address (who sends)
         to: sendTo, // list of receivers (who receives)
-        subject: 'Your door code is here!', // Subject line
-        html: html,
+        subject: 'Your door access key is here!', // Subject line
+        // html: html,
+        template: 'email',
+        context: {
+            link: getLinkForUser()
+        },
         attachments: [
             {   // stream as an attachment
                 filename: 'fb-logo.png',
@@ -61,6 +81,7 @@ const sendMail = async (sendTo) => {
                 content: fs.createReadStream('./images/twtr-logo.png'),
                 cid: "twtr-logo"
             },
+            // unused cr-logo
             // {
             //     filename: 'cr-logo.png',
             //     content: fs.createReadStream('./images/cr-logo.png'),
