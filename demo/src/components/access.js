@@ -52,15 +52,17 @@ function DoorLockBLE() {
         } else if (device && device.name && device.name !== lockData.deviceName) {
             setErrorM("Incorrect device paired... Please pair \"" + lockData.deviceName + "\"");
         }
-        else if (autoConnect && devices && devices.length > 0 && lockData.deviceName && !activeDevice) {
-            for (let i = 0; i < devices.length; i++) {
-                if (devices[i] && devices[i].name && devices[i].gatt && devices[i].name === lockData.deviceName) {
-                    console.log("Found device: ", devices[i].name, devices[i]);
-                    setActiveDevice(devices[i]);
-                    handleConnect(devices[i]);
-                }
-            }
-        }
+        //Below piece of code stoped working for unknown reason reason...
+
+        // else if (autoConnect && devices && devices.length > 0 && lockData.deviceName && !activeDevice) {
+        //     for (let i = 0; i < devices.length; i++) {
+        //         if (devices[i] && devices[i].name && devices[i].gatt && devices[i].name === lockData.deviceName) {
+        //             console.log("Found device: ", devices[i].name, devices[i]);
+        //             setActiveDevice(devices[i]);
+        //             handleConnect(devices[i]);
+        //         }
+        //     }
+        // }
         // else if (devices && devices.length > 0 && !activeDevice) {
         //     setActiveDevice(devices[0]);
         // }
