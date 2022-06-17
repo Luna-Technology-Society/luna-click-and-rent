@@ -25,6 +25,7 @@ function DoorLockBLE() {
     const [activeDevice, setActiveDevice] = useState(undefined);
     const [lockStatus, setLockStatus] = useState(true);
     const [lockData, setLockData] = useState({});
+    const [isLoaded, setIsLoaded] = useState(true);
 
     useEffect(() => {
         if (typeof window !== undefined) {
@@ -154,7 +155,12 @@ function DoorLockBLE() {
 
     return (
         <div style={container}>
-            {!activeDevice && <button style={buttonStyles} onClick={handlePair}>Your lock is called "{lockData.name}". Please press the button below, find and pair "{lockData.name}"</button>}
+            {!activeDevice && JSON.stringify(lockData) !== "{}" && 
+            <>
+            <span style={labels}>Your lock is called "{lockData.name}". Please press the button below, find and pair "{lockData.name}"</span>
+            <button style={buttonStyles} onClick={handlePair}>Pair lock</button>
+            </>
+            }
             {!chrtstc && activeDevice && <>
                 <span style={labels}>Pairing successfull. Automatically connecting to device... "{activeDevice.name}"?</span>
                 <RingLoader color={'black'} loading={!isLoaded} size={100} css={spinnerStyle} />
@@ -174,6 +180,15 @@ function DoorLockBLE() {
         </div>
     );
 }
+
+const spinnerStyle = `
+display: block;
+margin: 0 auto;
+border-color: red;
+position: absolute;
+top: 50%;
+left: 50%;
+`;
 
 const container = {
     display: "flex",
