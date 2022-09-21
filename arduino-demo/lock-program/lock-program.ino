@@ -23,6 +23,7 @@ BLEService ledService("19B10000-E8F2-537E-4F6C-D104768A1214"); // Bluetooth® Lo
 BLEByteCharacteristic switchCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
 
 const int ledPin = LED_BUILTIN; // pin to use for the LED
+boolean doorIsLocked = true;
 
 void setup() {
   Serial.begin(9600);
@@ -92,11 +93,17 @@ void loop() {
 }
 
 void lockdoor() {
-  Serial.println("LED on");
-  digitalWrite(ledPin, HIGH);         // will turn the LED on
+  if(!doorIsLocked){
+    Serial.println("LED on");
+    digitalWrite(ledPin, HIGH);         // will turn the LED on
+    doorIsLocked = true;
+  }
 };
 
 void unlockdoor() {
-  Serial.println(F("LED off"));
-  digitalWrite(ledPin, LOW);          // will turn the LED off
+  if(doorIsLocked){
+    Serial.println(F("LED off"));
+    digitalWrite(ledPin, LOW);          // will turn the LED off
+  }
+  doorIsLocked = false;
 }
