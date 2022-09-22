@@ -29,12 +29,9 @@ BLEService ledService("19B10000-E8F2-537E-4F6C-D104768A1214"); // Bluetooth® Lo
 // Bluetooth® Low Energy LED Switch Characteristic - custom 128-bit UUID, read and writable by central
 BLEByteCharacteristic switchCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
 
-<<<<<<< HEAD
-=======
 const int ledPin = LED_BUILTIN; // pin to use for the LED
 boolean doorIsLocked = true;
 
->>>>>>> e49078947d21e1928ba8fc0e1510b9ae8b849bd1
 void setup() {
   Serial.begin(9600);
   //  while (!Serial);
@@ -106,41 +103,36 @@ void loop() {
   }
 }
 
-<<<<<<< HEAD
-//void lockdoor() {
-//  Serial.println("LED on");
-//  digitalWrite(ledPin, HIGH);         // will turn the LED on
-//};
-
-//void unlockdoor() {
-//  Serial.println(F("LED off"));
-//  digitalWrite(ledPin, LOW);          // will turn the LED off
-//}
-
 // unlock door 
 void unlockDoor(){
-  digitalWrite(BIN1,HIGH);
-  digitalWrite(BIN2,LOW);
-  digitalWrite(PWMB,HIGH);
-  digitalWrite(STBY,HIGH);
-  digitalWrite(LED,LOW);
-  Serial.println("door open");
-  delay(1400);
-  digitalWrite(STBY,LOW);
-  Serial.println("STBY");
+   if(!doorIsLocked){
+    digitalWrite(BIN1,HIGH);
+    digitalWrite(BIN2,LOW);
+    digitalWrite(PWMB,HIGH);
+    digitalWrite(STBY,HIGH);
+    digitalWrite(LED,LOW);
+    Serial.println("door open");
+    delay(1400);
+    digitalWrite(STBY,LOW);
+    Serial.println("STBY"); 
+    doorIsLocked = false;
+ }
 }
 
 //lock door
 void lockDoor(){
-  digitalWrite(BIN1,LOW);
-  digitalWrite(BIN2,HIGH);
-  digitalWrite(PWMB,HIGH);
-  digitalWrite(STBY,HIGH);
-  digitalWrite(LED,HIGH);
-  Serial.println("door locked");
-  delay(1400);
-  digitalWrite(STBY,LOW);
-  Serial.println("STBY");
+   if(doorIsLocked){
+     digitalWrite(BIN1,LOW);
+     digitalWrite(BIN2,HIGH);
+     digitalWrite(PWMB,HIGH);
+     digitalWrite(STBY,HIGH);
+     digitalWrite(LED,HIGH);
+     Serial.println("door locked");
+     delay(1400);
+     digitalWrite(STBY,LOW);
+     Serial.println("STBY");
+     doorIsLocked = true;
+  }
 }
 
 //set motor controler to standby mode 
@@ -149,20 +141,4 @@ void setControllerToSTBY(){
   digitalWrite(BIN2,LOW);
   digitalWrite(STBY,LOW);
   digitalWrite(LED,HIGH);
-=======
-void lockdoor() {
-  if(!doorIsLocked){
-    Serial.println("LED on");
-    digitalWrite(ledPin, HIGH);         // will turn the LED on
-    doorIsLocked = true;
-  }
-};
-
-void unlockdoor() {
-  if(doorIsLocked){
-    Serial.println(F("LED off"));
-    digitalWrite(ledPin, LOW);          // will turn the LED off
-  }
-  doorIsLocked = false;
->>>>>>> e49078947d21e1928ba8fc0e1510b9ae8b849bd1
 }
